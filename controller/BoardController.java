@@ -1,3 +1,5 @@
+package controller;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -6,6 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import model.Board;
+import model.Color;
+import model.Piece;
 
 public class BoardController implements Initializable {
     
@@ -17,34 +22,36 @@ public class BoardController implements Initializable {
     private Color color;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
 
         board = new Board(19, 19);
         count = 0;
 
-        board_view.setOnMouseClicked( event -> {
-            int x = ((int)event.getX() - 4) / 20;
-            int y = ((int)event.getY() - 4) / 20;
+        board_view.setOnMouseClicked(event -> {
+            final int x = ((int) event.getX() - 4) / 20;
+            final int y = ((int) event.getY() - 4) / 20;
             System.out.println("x : " + x + " y : " + y);
+
+            String image_url = "";
+            if ((count & 1) == 0) {
+                image_url = "img/white_go_stone.png";
+                color = Color.BLACK;
+            } else {
+                image_url = "img/black_go_stone.png";
+                color = Color.WHITE;
+            }
 
             if (board.getPiece(x, y) != null) {
                 System.out.println("이미 있는 자리 입니다.");
                 return;
             }
-            if(!board.putPiece(new Piece(color), x, y)) {
+            boolean puttable = board.putPiece(new Piece(color), x, y);
+            if (!puttable) {
                 System.out.println("놓을 수 없는 자리 입니다.");
                 return;
             }
 
-            String image_url = "";
-            if ((count & 1) == 0) {
-                image_url = "800px-Go_b_no_bg.svg.png";
-                color = Color.BLACK;
-            } else {
-                image_url = "Go_w_no_bg.svg.png";
-                color = Color.WHITE;
-            }
-            ImageView go_stone = new ImageView(new Image(image_url));
+            final ImageView go_stone = new ImageView(new Image(image_url));
 
             go_stone.setFitHeight(20);
             go_stone.setFitWidth(20);

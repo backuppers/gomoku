@@ -10,12 +10,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("board.fxml"));
+        try {
+        Parent root = FXMLLoader.load(getClass().getResource("views/board.fxml"));
         Scene scene = new Scene(root, 386, 386);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());
         primaryStage.setTitle("오목");
         primaryStage.setScene(scene);
         primaryStage.show();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     
 }
